@@ -1,0 +1,188 @@
+---
+/** SearchDialog — Pagefind 全文搜索弹窗 */
+---
+
+<button
+  class="search-trigger"
+  data-component="SearchDialog"
+  aria-label="搜索"
+  title="搜索"
+>
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+  </svg>
+</button>
+
+<dialog class="search-dialog" id="search-dialog">
+  <div class="search-content">
+    <input
+      type="text"
+      class="search-input"
+      id="search-input"
+      placeholder="搜索文章..."
+      autocomplete="off"
+    />
+    <div class="search-results" id="search-results"></div>
+    <button class="search-close" id="search-close">&times;</button>
+  </div>
+</dialog>
+
+<script is:inline>
+  let pagefind: any = null;
+
+  async function initPagefind() {
+    if (pagefind) return pagefind;
+    try {
+      pagefind = await import('/_pagefind/pagefind.js');
+      return pagefind;
+    } catch {
+      return null;
+    }
+  }
+
+  const trigger = document.querySelector('[data-component="SearchDialog"]');
+  const dialog = document.getElementById('search-dialog');
+  const input = document.getElementById('search-input');
+  const results = document.getElementById('search-results');
+  const closeBtn = document.getElementById('search-close');
+
+  trigger?.addEventListener('click', async () => {
+    dialog?.showModal();
+    input?.focus();
+    await initPagefind();
+  });
+
+  closeBtn?.addEventListener('click', () => dialog?.close());
+  dialog?.addEventListener('click', (e) => {
+    if (e.target === dialog) dialog.close();
+  });
+
+  input?.addEventListener('input', async (e) => {
+    const query = e.target.value.trim();
+    if (!results) return;
+
+    if (!query) {
+      results.innerHTML = '';
+      return;
+    }
+
+    const pf = await initPagefind();
+    if (!pf) {
+      results.innerHTML = '<p class="search-empty">搜索功能需要构建后可用。</p>';
+      return;
+    }
+
+    const search = await pf.search(query);
+    if (!search.results.length) {
+      results.innerHTML = '<p class="search-empty">未找到相关内容。</p>';
+      return;
+    }
+
+    const items = await Promise.all(
+      search.results.slice(0, 10).map(async (r: any) => {
+        const data = await r.data();
+        return `<a href="${data.url}" class="search-result-item">
+          <h3>${data.meta?.title || '无标题'}</h3>
+          <p>${data.excerpt}</p>
+        </a>`;
+      })
+    );
+    results.innerHTML = items.join('');
+  });
+</script>
+
+<style>
+  .search-trigger {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-secondary);
+    padding: var(--space-2);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+  }
+
+  .search-trigger:hover {
+    color: var(--color-accent);
+  }
+
+  .search-dialog {
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 0;
+    max-width: 600px;
+    width: 90vw;
+    box-shadow: var(--shadow-md);
+    background: var(--color-bg);
+  }
+
+  .search-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.4);
+  }
+
+  .search-content {
+    padding: var(--space-6);
+    position: relative;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    font-family: var(--font-serif);
+    font-size: var(--text-base);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-bg);
+    color: var(--color-text);
+    outline: none;
+  }
+
+  .search-input:focus {
+    border-color: var(--color-accent);
+  }
+
+  .search-results {
+    margin-top: var(--space-4);
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  :global(.search-result-item) {
+    display: block;
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--color-border-light);
+    text-decoration: none;
+    color: var(--color-text);
+  }
+
+  :global(.search-result-item h3) {
+    font-size: var(--text-base);
+    margin-bottom: var(--space-1);
+    color: var(--color-accent);
+  }
+
+  :global(.search-result-item p) {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .search-close {
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-3);
+    background: none;
+    border: none;
+    font-size: var(--text-xl);
+    color: var(--color-text-tertiary);
+    cursor: pointer;
+  }
+
+  .search-empty {
+    text-align: center;
+    color: var(--color-text-tertiary);
+    font-style: italic;
+    padding: var(--space-6) 0;
+  }
+</style>

@@ -1,0 +1,55 @@
+---
+/** TagCloud — 标签云，字号按文章数缩放 */
+
+interface Props {
+  tags: { name: string; count: number }[];
+  class?: string;
+}
+
+const { tags, class: className } = Astro.props;
+const maxCount = Math.max(...tags.map((t) => t.count), 1);
+
+function fontSize(count: number): string {
+  const scale = 0.8 + (count / maxCount) * 0.6;
+  return `${scale}rem`;
+}
+---
+
+<div class:list={['tag-cloud', className]}>
+  {tags.map(({ name, count }) => (
+    <a
+      href={`/blog/tag/${name}/`}
+      class="tag-cloud-item"
+      style={`font-size: ${fontSize(count)}`}
+    >
+      #{name}
+      <span class="tag-count">{count}</span>
+    </a>
+  ))}
+</div>
+
+<style>
+  .tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    align-items: baseline;
+  }
+
+  .tag-cloud-item {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .tag-cloud-item:hover {
+    color: var(--color-accent);
+  }
+
+  .tag-count {
+    font-size: var(--text-xs);
+    color: var(--color-text-tertiary);
+    vertical-align: super;
+    margin-left: 2px;
+  }
+</style>

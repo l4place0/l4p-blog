@@ -4,6 +4,7 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ArticleMeta from '../../components/ArticleMeta.astro';
+import TableOfContents from '../../components/TableOfContents.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
@@ -14,30 +15,48 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
 ---
 
 <BaseLayout title={post.data.title} description={post.data.description}>
-  <article class="blog-post">
-    <header class="post-header">
-      <h1 class="post-title">{post.data.title}</h1>
-      <ArticleMeta
-        pubDate={post.data.pubDate}
-        category={post.data.category}
-        tags={post.data.tags}
-        content={post.body}
-      />
-    </header>
-    <div class="prose">
-      <Content />
-    </div>
-  </article>
+  <div class="post-layout">
+    {headings.length > 0 && (
+      <aside class="post-sidebar">
+        <TableOfContents headings={headings} />
+      </aside>
+    )}
+    <article class="blog-post">
+      <header class="post-header">
+        <h1 class="post-title">{post.data.title}</h1>
+        <ArticleMeta
+          pubDate={post.data.pubDate}
+          category={post.data.category}
+          tags={post.data.tags}
+          content={post.body}
+        />
+      </header>
+      <div class="prose">
+        <Content />
+      </div>
+    </article>
+  </div>
 </BaseLayout>
 
 <style>
+  .post-layout {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr var(--sidebar-width);
+    gap: var(--space-12);
+  }
+
+  .post-sidebar {
+    display: none;
+  }
+
   .blog-post {
     max-width: var(--content-width);
-    margin: 0 auto;
   }
 
   .post-header {
@@ -52,5 +71,17 @@ const { Content } = await render(post);
     letter-spacing: var(--tracking-wide);
     margin-bottom: var(--space-4);
     line-height: var(--leading-tight);
+  }
+
+  @media (min-width: 1025px) {
+    .post-sidebar {
+      display: block;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .post-layout {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

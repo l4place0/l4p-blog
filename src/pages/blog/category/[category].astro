@@ -1,0 +1,46 @@
+---
+/** 分类页 — 按分类过滤文章 */
+
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ArticleCard from '../../../components/ArticleCard.astro';
+import CategoryList from '../../../components/CategoryList.astro';
+
+const CATEGORIES = ['随笔', '技术', '读书', '生活', '设计'];
+
+export function getStaticPaths() {
+  const categories = ['随笔', '技术', '读书', '生活', '设计'];
+  return categories.map((category) => ({
+    params: { category },
+    props: { category },
+  }));
+}
+
+const { category } = Astro.props;
+
+const allPosts = await getCollection(
+  'blog',
+  ({ data }) => !data.draft && data.category === category
+);
+const sortedPosts = allPosts.sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<BaseLayout title={`分类：${category}`} description={`${category} 相关文章`}>
+  <CategoryList categories={CATEGORIES} current={category} />
+  {sortedPosts.length === 0 ? (
+    <p class="empty-state">暂无文章。</p>
+  ) : (
+    sortedPosts.map((post) => <ArticleCard post={post} />)
+  )}
+</BaseLayout>
+
+<style>
+  .empty-state {
+    text-align: center;
+    padding: var(--space-12) 0;
+    color: var(--color-text-tertiary);
+    font-style: italic;
+  }
+</style>

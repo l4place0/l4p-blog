@@ -1,0 +1,105 @@
+---
+/** TableOfContents — 文章目录（桌面sticky/手机折叠） */
+
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: Heading[];
+  class?: string;
+}
+
+const { headings, class: className } = Astro.props;
+const minDepth = Math.min(...headings.map((h) => h.depth));
+---
+
+{headings.length > 0 && (
+  <nav class:list={['toc', className]} data-component="TableOfContents">
+    <details class="toc-details" open>
+      <summary class="toc-summary">目录</summary>
+      <ul class="toc-list">
+        {headings.map((heading) => (
+          <li
+            class="toc-item"
+            style={`padding-left: ${(heading.depth - minDepth) * 1}rem`}
+          >
+            <a href={`#${heading.slug}`} class="toc-link">{heading.text}</a>
+          </li>
+        ))}
+      </ul>
+    </details>
+  </nav>
+)}
+
+<script>
+  // IntersectionObserver 高亮当前可见标题
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const id = entry.target.id;
+        const link = document.querySelector(`.toc-link[href="#${id}"]`);
+        if (link) {
+          link.classList.toggle('toc-link-active', entry.isIntersecting);
+        }
+      });
+    },
+    { rootMargin: '-80px 0px -80% 0px' }
+  );
+
+  document.querySelectorAll('.prose h2, .prose h3').forEach((h) => observer.observe(h));
+</script>
+
+<style>
+  .toc {
+    position: sticky;
+    top: 5rem;
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
+  }
+
+  .toc-summary {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    padding: var(--space-2) 0;
+  }
+
+  .toc-list {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-2) 0 0;
+  }
+
+  .toc-item {
+    padding: var(--space-1) 0;
+  }
+
+  .toc-link {
+    font-size: var(--text-sm);
+    color: var(--color-text-tertiary);
+    text-decoration: none;
+    display: block;
+    padding: var(--space-1) var(--space-2);
+    border-left: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .toc-link:hover,
+  .toc-link-active {
+    color: var(--color-accent);
+    border-left-color: var(--color-accent);
+  }
+
+  @media (max-width: 1024px) {
+    .toc {
+      position: static;
+      max-height: none;
+      margin-bottom: var(--space-6);
+    }
+  }
+</style>

@@ -1,0 +1,46 @@
+---
+/** 搜索页面 — Pagefind 全文搜索 */
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="搜索" description="搜索博客文章">
+  <div class="search-page">
+    <h1 class="search-title">搜索</h1>
+    <div id="pagefind-search"></div>
+    <p class="search-note" id="search-note"></p>
+  </div>
+</BaseLayout>
+
+<script is:inline>
+  (async function() {
+    const container = document.getElementById('pagefind-search');
+    const note = document.getElementById('search-note');
+    try {
+      const pagefind = await import('/_pagefind/pagefind.js');
+      pagefind.init();
+    } catch {
+      if (note) note.textContent = '搜索功能需要构建后（npm run build）才可用。';
+    }
+  })();
+</script>
+
+<style>
+  .search-page {
+    max-width: var(--content-width);
+    margin: 0 auto;
+  }
+
+  .search-title {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    margin-bottom: var(--space-6);
+  }
+
+  .search-note {
+    text-align: center;
+    color: var(--color-text-tertiary);
+    font-style: italic;
+    margin-top: var(--space-6);
+  }
+</style>
