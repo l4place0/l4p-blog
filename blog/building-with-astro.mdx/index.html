@@ -1,0 +1,87 @@
+<!DOCTYPE html><html lang="zh-CN" data-astro-cid-37fxchfa> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="技术笔记：如何用 Astro 构建一个文艺风格的个人博客。"><link rel="canonical" href="https://l4place0.github.io/l4p-blog/blog/building-with-astro.mdx/"><link rel="alternate" type="application/rss+xml" title="l4.place RSS" href="/rss.xml"><title>用 Astro 搭建复古博客 | l4.place</title><!-- Open Graph --><meta property="og:title" content="用 Astro 搭建复古博客 | l4.place"><meta property="og:description" content="技术笔记：如何用 Astro 构建一个文艺风格的个人博客。"><meta property="og:type" content="website"><meta property="og:url" content="https://l4place0.github.io/l4p-blog/blog/building-with-astro.mdx/"><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="用 Astro 搭建复古博客 | l4.place"><meta name="twitter:description" content="技术笔记：如何用 Astro 构建一个文艺风格的个人博客。"><!-- Fonts: Google Fonts CDN --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@400;700&family=Noto+Serif+SC:wght@400;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet"><!-- Styles --><!-- 暗色模式防闪烁 — 必须在 body 渲染前执行 --><script>
+  const theme = localStorage.getItem('theme') ||
+    (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', theme);
+</script><link rel="stylesheet" href="/l4p-blog/_astro/about.o2lme8jk.css">
+<style>.toc[data-astro-cid-xvrfupwn]{position:sticky;top:5rem;max-height:calc(100vh - 8rem);overflow-y:auto}.toc-summary[data-astro-cid-xvrfupwn]{font-family:var(--font-display);font-size:var(--text-sm);font-weight:700;color:var(--color-text-secondary);cursor:pointer;padding:var(--space-2) 0}.toc-list[data-astro-cid-xvrfupwn]{list-style:none;padding:0;margin:var(--space-2) 0 0}.toc-item[data-astro-cid-xvrfupwn]{padding:var(--space-1) 0}.toc-link[data-astro-cid-xvrfupwn]{font-size:var(--text-sm);color:var(--color-text-tertiary);text-decoration:none;display:block;padding:var(--space-1) var(--space-2);border-left:2px solid transparent;transition:color .2s,border-color .2s}.toc-link[data-astro-cid-xvrfupwn]:hover,.toc-link-active[data-astro-cid-xvrfupwn]{color:var(--color-accent);border-left-color:var(--color-accent)}@media(max-width:1024px){.toc[data-astro-cid-xvrfupwn]{position:static;max-height:none;margin-bottom:var(--space-6)}}.comments[data-astro-cid-fdrkzv5s]{margin-top:var(--space-12);padding-top:var(--space-6);border-top:1px solid var(--color-border-light)}.post-layout[data-astro-cid-7jjqptxk]{max-width:var(--max-width);margin:0 auto;display:grid;grid-template-columns:1fr var(--sidebar-width);gap:var(--space-12)}.post-sidebar[data-astro-cid-7jjqptxk]{display:none}.blog-post[data-astro-cid-7jjqptxk]{max-width:var(--content-width)}.post-header[data-astro-cid-7jjqptxk]{margin-bottom:var(--space-12);padding-bottom:var(--space-6);border-bottom:1px solid var(--color-border-light)}.post-title[data-astro-cid-7jjqptxk]{font-family:var(--font-display);font-size:var(--text-3xl);letter-spacing:var(--tracking-wide);margin-bottom:var(--space-4);line-height:var(--leading-tight)}@media(min-width:1025px){.post-sidebar[data-astro-cid-7jjqptxk]{display:block}}@media(max-width:1024px){.post-layout[data-astro-cid-7jjqptxk]{grid-template-columns:1fr}}
+.article-meta[data-astro-cid-zx34l4z3]{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-2);font-size:var(--text-sm);color:var(--color-text-tertiary)}.meta-sep[data-astro-cid-zx34l4z3]{color:var(--color-border)}.meta-category[data-astro-cid-zx34l4z3]{color:var(--color-accent);text-decoration:none}.meta-tags[data-astro-cid-zx34l4z3]{display:flex;gap:var(--space-2);margin-left:var(--space-2)}.meta-tag[data-astro-cid-zx34l4z3]{color:var(--color-text-tertiary);text-decoration:none;font-size:var(--text-xs)}.meta-tag[data-astro-cid-zx34l4z3]:hover{color:var(--color-accent)}
+</style></head> <body data-astro-cid-37fxchfa> <header class="site-header" data-component="Header" data-astro-cid-3ef6ksr2> <nav class="header-nav" data-astro-cid-3ef6ksr2> <a href="/" class="site-logo" data-astro-cid-3ef6ksr2>l4.place</a> <ul class="nav-links" data-astro-cid-3ef6ksr2> <li data-astro-cid-3ef6ksr2> <a href="/" class="nav-link" data-astro-cid-3ef6ksr2> 首页 </a> </li><li data-astro-cid-3ef6ksr2> <a href="/blog" class="nav-link" data-astro-cid-3ef6ksr2> 文章 </a> </li><li data-astro-cid-3ef6ksr2> <a href="/projects" class="nav-link" data-astro-cid-3ef6ksr2> 作品 </a> </li><li data-astro-cid-3ef6ksr2> <a href="/about" class="nav-link" data-astro-cid-3ef6ksr2> 关于 </a> </li> </ul> <div class="header-actions" data-astro-cid-3ef6ksr2> <button class="search-trigger" data-component="SearchDialog" aria-label="搜索" title="搜索" data-astro-cid-euff75kw> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-euff75kw> <circle cx="11" cy="11" r="8" data-astro-cid-euff75kw></circle><line x1="21" y1="21" x2="16.65" y2="16.65" data-astro-cid-euff75kw></line> </svg> </button> <dialog class="search-dialog" id="search-dialog" data-astro-cid-euff75kw> <div class="search-content" data-astro-cid-euff75kw> <input type="text" class="search-input" id="search-input" placeholder="搜索文章..." autocomplete="off" data-astro-cid-euff75kw> <div class="search-results" id="search-results" data-astro-cid-euff75kw></div> <button class="search-close" id="search-close" data-astro-cid-euff75kw>&times;</button> </div> </dialog> <script>
+  let pagefind: any = null;
+
+  async function initPagefind() {
+    if (pagefind) return pagefind;
+    try {
+      pagefind = await import('/_pagefind/pagefind.js');
+      return pagefind;
+    } catch {
+      return null;
+    }
+  }
+
+  const trigger = document.querySelector('[data-component="SearchDialog"]');
+  const dialog = document.getElementById('search-dialog');
+  const input = document.getElementById('search-input');
+  const results = document.getElementById('search-results');
+  const closeBtn = document.getElementById('search-close');
+
+  trigger?.addEventListener('click', async () => {
+    dialog?.showModal();
+    input?.focus();
+    await initPagefind();
+  });
+
+  closeBtn?.addEventListener('click', () => dialog?.close());
+  dialog?.addEventListener('click', (e) => {
+    if (e.target === dialog) dialog.close();
+  });
+
+  input?.addEventListener('input', async (e) => {
+    const query = e.target.value.trim();
+    if (!results) return;
+
+    if (!query) {
+      results.innerHTML = '';
+      return;
+    }
+
+    const pf = await initPagefind();
+    if (!pf) {
+      results.innerHTML = '<p class="search-empty">搜索功能需要构建后可用。</p>';
+      return;
+    }
+
+    const search = await pf.search(query);
+    if (!search.results.length) {
+      results.innerHTML = '<p class="search-empty">未找到相关内容。</p>';
+      return;
+    }
+
+    const items = await Promise.all(
+      search.results.slice(0, 10).map(async (r: any) => {
+        const data = await r.data();
+        return `<a href="${data.url}" class="search-result-item">
+          <h3>${data.meta?.title || '无标题'}</h3>
+          <p>${data.excerpt}</p>
+        </a>`;
+      })
+    );
+    results.innerHTML = items.join('');
+  });
+</script>  <button class="dark-mode-toggle" data-component="DarkModeToggle" aria-label="切换暗色模式" title="切换暗色模式" data-astro-cid-tcsrer47> <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-tcsrer47> <circle cx="12" cy="12" r="5" data-astro-cid-tcsrer47></circle><line x1="12" y1="1" x2="12" y2="3" data-astro-cid-tcsrer47></line><line x1="12" y1="21" x2="12" y2="23" data-astro-cid-tcsrer47></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" data-astro-cid-tcsrer47></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" data-astro-cid-tcsrer47></line><line x1="1" y1="12" x2="3" y2="12" data-astro-cid-tcsrer47></line><line x1="21" y1="12" x2="23" y2="12" data-astro-cid-tcsrer47></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" data-astro-cid-tcsrer47></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" data-astro-cid-tcsrer47></line> </svg> <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-tcsrer47> <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" data-astro-cid-tcsrer47></path> </svg> </button> <script type="module">const n=document.querySelector('[data-component="DarkModeToggle"]');n?.addEventListener("click",()=>{const t=document.documentElement,e=t.getAttribute("data-theme")==="dark"?"light":"dark";t.setAttribute("data-theme",e),localStorage.setItem("theme",e)});</script>  </div> </nav> </header>  <main class="main-content" data-astro-cid-37fxchfa>  <div class="post-layout" data-astro-cid-7jjqptxk> <aside class="post-sidebar" data-astro-cid-7jjqptxk> <nav class="toc" data-component="TableOfContents" data-astro-cid-xvrfupwn><details class="toc-details" open data-astro-cid-xvrfupwn><summary class="toc-summary" data-astro-cid-xvrfupwn>目录</summary><ul class="toc-list" data-astro-cid-xvrfupwn><li class="toc-item" style="padding-left: 0rem" data-astro-cid-xvrfupwn><a href="#核心优势" class="toc-link" data-astro-cid-xvrfupwn>核心优势</a></li><li class="toc-item" style="padding-left: 0rem" data-astro-cid-xvrfupwn><a href="#代码示例" class="toc-link" data-astro-cid-xvrfupwn>代码示例</a></li></ul></details></nav><script type="module">const c=new IntersectionObserver(e=>{e.forEach(o=>{const t=o.target.id,r=document.querySelector(`.toc-link[href="#${t}"]`);r&&r.classList.toggle("toc-link-active",o.isIntersecting)})},{rootMargin:"-80px 0px -80% 0px"});document.querySelectorAll(".prose h2, .prose h3").forEach(e=>c.observe(e));</script> </aside> <article class="blog-post" data-astro-cid-7jjqptxk> <header class="post-header" data-astro-cid-7jjqptxk> <h1 class="post-title" data-astro-cid-7jjqptxk>用 Astro 搭建复古博客</h1> <div class="article-meta" data-astro-cid-zx34l4z3> <time datetime="2026-06-25T00:00:00.000Z" data-astro-cid-zx34l4z3>2026年6月25日</time> <span class="meta-sep" data-astro-cid-zx34l4z3>·</span> <a href="/blog/category/技术/" class="meta-category" data-astro-cid-zx34l4z3>技术</a>  <span class="meta-sep" data-astro-cid-zx34l4z3>·</span> <span data-astro-cid-zx34l4z3>1 分钟</span>  <div class="meta-tags" data-astro-cid-zx34l4z3> <a href="/blog/tag/astro/" class="meta-tag" data-astro-cid-zx34l4z3>#astro</a><a href="/blog/tag/前端/" class="meta-tag" data-astro-cid-zx34l4z3>#前端</a><a href="/blog/tag/博客/" class="meta-tag" data-astro-cid-zx34l4z3>#博客</a> </div> </div>  </header> <div class="prose" data-astro-cid-7jjqptxk> <p>选择 Astro 的理由很简单：它是为内容站点而生的。</p>
+<h2 id="核心优势">核心优势</h2>
+<ul>
+<li><strong>零 JS 默认</strong>：纯 HTML/CSS 输出，性能极佳</li>
+<li><strong>Islands 架构</strong>：按需加载交互组件</li>
+<li><strong>Content Collections</strong>：类型安全的 Markdown 管理</li>
+</ul>
+<h2 id="代码示例">代码示例</h2>
+<pre class="astro-code astro-code-themes rose-pine-dawn rose-pine" style="background-color:#faf4ed;--shiki-dark-bg:#191724;color:#575279;--shiki-dark:#e0def4;overflow-x:auto;white-space:pre-wrap;word-wrap:break-word" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#797593;--shiki-light-font-style:italic;--shiki-dark:#908CAA;--shiki-dark-font-style:italic">//</span><span style="color:#9893A5;--shiki-light-font-style:italic;--shiki-dark:#6E6A86;--shiki-dark-font-style:italic"> 内容集合 schema 定义</span></span>
+<span class="line"><span style="color:#286983;--shiki-dark:#31748F">const</span><span style="color:#575279;--shiki-light-font-style:italic;--shiki-dark:#E0DEF4;--shiki-dark-font-style:italic"> blog</span><span style="color:#286983;--shiki-dark:#31748F"> =</span><span style="color:#D7827E;--shiki-dark:#EBBCBA"> defineCollection</span><span style="color:#575279;--shiki-dark:#E0DEF4">(</span><span style="color:#797593;--shiki-dark:#908CAA">{</span></span>
+<span class="line"><span style="color:#575279;--shiki-dark:#E0DEF4">  type</span><span style="color:#797593;--shiki-dark:#908CAA">:</span><span style="color:#EA9D34;--shiki-dark:#F6C177"> &#39;content&#39;</span><span style="color:#797593;--shiki-dark:#908CAA">,</span></span>
+<span class="line"><span style="color:#575279;--shiki-dark:#E0DEF4">  schema</span><span style="color:#797593;--shiki-dark:#908CAA">:</span><span style="color:#575279;--shiki-light-font-style:italic;--shiki-dark:#E0DEF4;--shiki-dark-font-style:italic"> z</span><span style="color:#286983;--shiki-dark:#31748F">.</span><span style="color:#D7827E;--shiki-dark:#EBBCBA">object</span><span style="color:#575279;--shiki-dark:#E0DEF4">(</span><span style="color:#797593;--shiki-dark:#908CAA">{</span></span>
+<span class="line"><span style="color:#575279;--shiki-dark:#E0DEF4">    title</span><span style="color:#797593;--shiki-dark:#908CAA">:</span><span style="color:#575279;--shiki-light-font-style:italic;--shiki-dark:#E0DEF4;--shiki-dark-font-style:italic"> z</span><span style="color:#286983;--shiki-dark:#31748F">.</span><span style="color:#D7827E;--shiki-dark:#EBBCBA">string</span><span style="color:#575279;--shiki-dark:#E0DEF4">()</span><span style="color:#797593;--shiki-dark:#908CAA">,</span></span>
+<span class="line"><span style="color:#575279;--shiki-dark:#E0DEF4">    pubDate</span><span style="color:#797593;--shiki-dark:#908CAA">:</span><span style="color:#575279;--shiki-light-font-style:italic;--shiki-dark:#E0DEF4;--shiki-dark-font-style:italic"> z</span><span style="color:#286983;--shiki-dark:#31748F">.</span><span style="color:#575279;--shiki-light-font-style:italic;--shiki-dark:#E0DEF4;--shiki-dark-font-style:italic">coerce</span><span style="color:#286983;--shiki-dark:#31748F">.</span><span style="color:#D7827E;--shiki-dark:#EBBCBA">date</span><span style="color:#575279;--shiki-dark:#E0DEF4">()</span><span style="color:#797593;--shiki-dark:#908CAA">,</span></span>
+<span class="line"><span style="color:#575279;--shiki-dark:#E0DEF4">    category</span><span style="color:#797593;--shiki-dark:#908CAA">:</span><span style="color:#575279;--shiki-light-font-style:italic;--shiki-dark:#E0DEF4;--shiki-dark-font-style:italic"> z</span><span style="color:#286983;--shiki-dark:#31748F">.</span><span style="color:#D7827E;--shiki-dark:#EBBCBA">enum</span><span style="color:#575279;--shiki-dark:#E0DEF4">([</span><span style="color:#EA9D34;--shiki-dark:#F6C177">&#39;随笔&#39;</span><span style="color:#797593;--shiki-dark:#908CAA">,</span><span style="color:#EA9D34;--shiki-dark:#F6C177"> &#39;技术&#39;</span><span style="color:#797593;--shiki-dark:#908CAA">,</span><span style="color:#EA9D34;--shiki-dark:#F6C177"> &#39;读书&#39;</span><span style="color:#797593;--shiki-dark:#908CAA">,</span><span style="color:#EA9D34;--shiki-dark:#F6C177"> &#39;生活&#39;</span><span style="color:#797593;--shiki-dark:#908CAA">,</span><span style="color:#EA9D34;--shiki-dark:#F6C177"> &#39;设计&#39;</span><span style="color:#575279;--shiki-dark:#E0DEF4">])</span><span style="color:#797593;--shiki-dark:#908CAA">,</span></span>
+<span class="line"><span style="color:#797593;--shiki-dark:#908CAA">  }</span><span style="color:#575279;--shiki-dark:#E0DEF4">)</span><span style="color:#797593;--shiki-dark:#908CAA">,</span></span>
+<span class="line"><span style="color:#797593;--shiki-dark:#908CAA">}</span><span style="color:#575279;--shiki-dark:#E0DEF4">)</span><span style="color:#797593;--shiki-dark:#908CAA">;</span></span></code></pre>
+<p>这套方案让博客既保持静态站点的简洁，又不失现代开发的便利。</p> </div> <div class="comments" data-component="CommentSection" data-astro-cid-fdrkzv5s> <script src="https://giscus.app/client.js" data-repo="l4p/l4.place" data-repo-id data-category="Announcements" data-category-id data-mapping="pathname" data-theme="light" data-lang="zh-CN" crossorigin="anonymous" async></script> </div> <script type="module">const t=new MutationObserver(()=>{const e=document.documentElement.getAttribute("data-theme");document.querySelector("iframe.giscus-frame")?.contentWindow?.postMessage({giscus:{setConfig:{theme:e==="dark"?"dark_dimmed":"light"}}},"https://giscus.app")});t.observe(document.documentElement,{attributes:!0,attributeFilter:["data-theme"]});</script>  </article> </div>  </main> <footer class="site-footer" data-component="Footer" data-astro-cid-sz7xmlte> <div class="footer-content" data-astro-cid-sz7xmlte> <p class="copyright" data-astro-cid-sz7xmlte>&copy; 2026 l4p</p> <nav class="footer-links" data-astro-cid-sz7xmlte> <a href="/rss.xml" data-astro-cid-sz7xmlte>RSS</a> <a href="/about" data-astro-cid-sz7xmlte>关于</a> </nav> </div> </footer>  </body></html> 
