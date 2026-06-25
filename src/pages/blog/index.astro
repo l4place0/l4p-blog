@@ -1,0 +1,28 @@
+---
+/** 博客列表页 — 分页展示所有文章 */
+
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import Pagination from '../../components/Pagination.astro';
+import CategoryList from '../../components/CategoryList.astro';
+
+const POSTS_PER_PAGE = 10;
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const sortedPosts = allPosts.sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const categories = [...new Set(allPosts.map((p) => p.data.category))];
+
+const currentPage = 1;
+const totalPages = Math.ceil(sortedPosts.length / POSTS_PER_PAGE);
+const posts = sortedPosts.slice(0, POSTS_PER_PAGE);
+---
+
+<BaseLayout title="文章" description="所有博客文章">
+  <CategoryList categories={categories} />
+  {posts.map((post) => <ArticleCard post={post} />)}
+  <Pagination currentPage={currentPage} totalPages={totalPages} basePath="/blog" />
+</BaseLayout>

@@ -1,0 +1,33 @@
+---
+title: "用 Astro 搭建复古博客"
+description: "技术笔记：如何用 Astro 构建一个文艺风格的个人博客。"
+pubDate: 2026-06-25
+category: "技术"
+tags: ["astro", "前端", "博客"]
+featured: false
+lang: "zh"
+---
+
+选择 Astro 的理由很简单：它是为内容站点而生的。
+
+## 核心优势
+
+- **零 JS 默认**：纯 HTML/CSS 输出，性能极佳
+- **Islands 架构**：按需加载交互组件
+- **Content Collections**：类型安全的 Markdown 管理
+
+## 代码示例
+
+```typescript
+// 内容集合 schema 定义
+const blog = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    pubDate: z.coerce.date(),
+    category: z.enum(['随笔', '技术', '读书', '生活', '设计']),
+  }),
+});
+```
+
+这套方案让博客既保持静态站点的简洁，又不失现代开发的便利。

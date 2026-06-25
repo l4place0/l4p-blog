@@ -1,0 +1,58 @@
+---
+/** Pagination — 分页导航 */
+
+interface Props {
+  currentPage: number;
+  totalPages: number;
+  basePath: string;
+  class?: string;
+}
+
+const { currentPage, totalPages, basePath, class: className } = Astro.props;
+const prevPage = currentPage > 1 ? currentPage - 1 : null;
+const nextPage = currentPage < totalPages ? currentPage + 1 : null;
+---
+
+{totalPages > 1 && (
+  <nav class:list={['pagination', className]} data-component="Pagination">
+    {prevPage ? (
+      <a href={prevPage === 1 ? basePath : `${basePath}/${prevPage}/`} class="pagination-link">
+        &larr; 上一页
+      </a>
+    ) : <span class="pagination-placeholder" />}
+    <span class="pagination-info">{currentPage} / {totalPages}</span>
+    {nextPage ? (
+      <a href={`${basePath}/${nextPage}/`} class="pagination-link">
+        下一页 &rarr;
+      </a>
+    ) : <span class="pagination-placeholder" />}
+  </nav>
+)}
+
+<style>
+  .pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-6) 0;
+  }
+
+  .pagination-link {
+    font-size: var(--text-sm);
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .pagination-link:hover {
+    color: var(--color-accent-hover);
+  }
+
+  .pagination-info {
+    font-size: var(--text-sm);
+    color: var(--color-text-tertiary);
+  }
+
+  .pagination-placeholder {
+    width: 80px;
+  }
+</style>

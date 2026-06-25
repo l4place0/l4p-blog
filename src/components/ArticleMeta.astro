@@ -1,0 +1,72 @@
+---
+/** ArticleMeta — 文章元数据：日期、分类、阅读时长、标签 */
+
+import { formatDate } from '../utils/date';
+import { readingTime } from '../utils/reading-time';
+
+interface Props {
+  pubDate: Date;
+  category: string;
+  tags?: string[];
+  content?: string;
+  class?: string;
+}
+
+const { pubDate, category, tags = [], content, class: className } = Astro.props;
+const time = content ? readingTime(content) : null;
+---
+
+<div class:list={['article-meta', className]}>
+  <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
+  <span class="meta-sep">·</span>
+  <a href={`/blog/category/${category}/`} class="meta-category">{category}</a>
+  {time && (
+    <>
+      <span class="meta-sep">·</span>
+      <span>{time}</span>
+    </>
+  )}
+  {tags.length > 0 && (
+    <div class="meta-tags">
+      {tags.map((tag) => (
+        <a href={`/blog/tag/${tag}/`} class="meta-tag">#{tag}</a>
+      ))}
+    </div>
+  )}
+</div>
+
+<style>
+  .article-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-text-tertiary);
+  }
+
+  .meta-sep {
+    color: var(--color-border);
+  }
+
+  .meta-category {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .meta-tags {
+    display: flex;
+    gap: var(--space-2);
+    margin-left: var(--space-2);
+  }
+
+  .meta-tag {
+    color: var(--color-text-tertiary);
+    text-decoration: none;
+    font-size: var(--text-xs);
+  }
+
+  .meta-tag:hover {
+    color: var(--color-accent);
+  }
+</style>

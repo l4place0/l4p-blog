@@ -1,0 +1,55 @@
+---
+/** ArticleCard — 文章列表卡片 */
+
+import type { CollectionEntry } from 'astro:content';
+import ArticleMeta from './ArticleMeta.astro';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  class?: string;
+}
+
+const { post, class: className } = Astro.props;
+---
+
+<article class:list={['article-card', className]}>
+  <h2 class="article-card-title">
+    <a href={`/blog/${post.id}/`}>{post.data.title}</a>
+  </h2>
+  <p class="article-card-desc">{post.data.description}</p>
+  <ArticleMeta
+    pubDate={post.data.pubDate}
+    category={post.data.category}
+    tags={post.data.tags}
+    content={post.body}
+  />
+</article>
+
+<style>
+  .article-card {
+    padding: var(--space-6) 0;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+
+  .article-card-title {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-2);
+  }
+
+  .article-card-title a {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .article-card-title a:hover {
+    color: var(--color-accent);
+  }
+
+  .article-card-desc {
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-3);
+    line-height: var(--leading-normal);
+  }
+</style>

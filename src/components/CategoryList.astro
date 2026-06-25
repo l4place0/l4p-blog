@@ -1,0 +1,49 @@
+---
+/** CategoryList — 分类水平列表 */
+
+interface Props {
+  categories: string[];
+  current?: string;
+  class?: string;
+}
+
+const { categories, current, class: className } = Astro.props;
+---
+
+<nav class:list={['category-list', className]}>
+  <a href="/blog/" class:list={['category-link', { active: !current }]}>全部</a>
+  {categories.map((cat) => (
+    <a
+      href={`/blog/category/${cat}/`}
+      class:list={['category-link', { active: current === cat }]}
+    >
+      {cat}
+    </a>
+  ))}
+</nav>
+
+<style>
+  .category-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    padding: var(--space-4) 0;
+    border-bottom: 1px solid var(--color-border-light);
+    margin-bottom: var(--space-6);
+  }
+
+  .category-link {
+    font-size: var(--text-sm);
+    color: var(--color-text-tertiary);
+    text-decoration: none;
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-sm);
+    transition: color 0.2s, background 0.2s;
+  }
+
+  .category-link:hover,
+  .category-link.active {
+    color: var(--color-accent);
+    background: var(--color-bg-secondary);
+  }
+</style>
