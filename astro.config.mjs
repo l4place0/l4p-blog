@@ -3,7 +3,8 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://l4p.github.io',
+  site: 'https://l4place0.github.io',
+  base: '/l4p-blog',
   base: '/',
   integrations: [mdx(), sitemap()],
   markdown: {
