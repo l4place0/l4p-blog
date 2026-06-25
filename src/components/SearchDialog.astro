@@ -28,7 +28,7 @@
 </dialog>
 
 <script is:inline>
-  let pagefind: any = null;
+  let pagefind = null;
 
   async function initPagefind() {
     if (pagefind) return pagefind;
@@ -79,7 +79,7 @@
     }
 
     const items = await Promise.all(
-      search.results.slice(0, 10).map(async (r: any) => {
+      search.results.slice(0, 10).map(async (r) => {
         const data = await r.data();
         return `<a href="${data.url}" class="search-result-item">
           <h3>${data.meta?.title || '无标题'}</h3>

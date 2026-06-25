@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { page } from './helpers';
+import { goto } from './helpers';
 
 test.describe('搜索', () => {
   test.beforeEach(async ({ page: p }) => {
@@ -7,8 +7,7 @@ test.describe('搜索', () => {
   });
 
   test('应该点击搜索按钮打开搜索弹窗', async ({ page: p }) => {
-    await p.goto(page('/'));
-    await p.waitForLoadState('domcontentloaded');
+    await goto(p, '/');
     const trigger = p.locator('[data-component="SearchDialog"]');
     const dialog = p.locator('#search-dialog');
 
@@ -18,8 +17,7 @@ test.describe('搜索', () => {
   });
 
   test('应该点击关闭按钮关闭弹窗', async ({ page: p }) => {
-    await p.goto(page('/'));
-    await p.waitForLoadState('domcontentloaded');
+    await goto(p, '/');
     await p.locator('[data-component="SearchDialog"]').click();
     const dialog = p.locator('#search-dialog');
     await expect(dialog).toBeVisible();
@@ -29,8 +27,7 @@ test.describe('搜索', () => {
   });
 
   test('应该输入关键词显示搜索结果', async ({ page: p }) => {
-    await p.goto(page('/'));
-    await p.waitForLoadState('domcontentloaded');
+    await goto(p, '/');
     await p.locator('[data-component="SearchDialog"]').click();
 
     await p.locator('#search-input').fill('astro');

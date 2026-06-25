@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-import { page } from './helpers';
+import { goto } from './helpers';
 
 const PAGES = ['/', '/blog/', '/about/', '/projects/'];
 
@@ -11,8 +11,7 @@ test.describe('可访问性', () => {
 
   for (const path of PAGES) {
     test(`${path} 应该无严重 WCAG 违规`, async ({ page: p }) => {
-      await p.goto(page(path));
-      await p.waitForLoadState('domcontentloaded');
+      await goto(p, path);
       const results = await new AxeBuilder({ page: p })
         .disableRules(['color-contrast', 'link-in-text-block'])
         .analyze();
@@ -22,8 +21,7 @@ test.describe('可访问性', () => {
   }
 
   test('应该所有图片有 alt 属性', async ({ page: p }) => {
-    await p.goto(page('/'));
-    await p.waitForLoadState('domcontentloaded');
+    await goto(p, '/');
     const images = p.locator('img');
     const count = await images.count();
     for (let i = 0; i < count; i++) {
@@ -32,15 +30,13 @@ test.describe('可访问性', () => {
   });
 
   test('应该按钮有可访问名称', async ({ page: p }) => {
-    await p.goto(page('/'));
-    await p.waitForLoadState('domcontentloaded');
+    await goto(p, '/');
     const buttons = p.locator('button');
     const count = await buttons.count();
     for (let i = 0; i < count; i++) {
       const btn = buttons.nth(i);
       const ariaLabel = await btn.getAttribute('aria-label');
       const text = await btn.textContent();
-      // 至少有 aria-label 或文字内容
       expect(ariaLabel || text?.trim() || '').not.toBe('');
     }
   });
