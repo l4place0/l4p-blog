@@ -1,0 +1,53 @@
+---
+/** CommentSection — Giscus 评论系统（GitHub Discussions） */
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+// 需要在 https://giscus.app/ 获取以下配置
+const REPO = 'l4p/l4.place';
+const REPO_ID = ''; // TODO: 填入
+const CATEGORY = 'Announcements';
+const CATEGORY_ID = ''; // TODO: 填入
+---
+
+<div class:list={['comments', className]} data-component="CommentSection">
+  <script
+    src="https://giscus.app/client.js"
+    data-repo={REPO}
+    data-repo-id={REPO_ID}
+    data-category={CATEGORY}
+    data-category-id={CATEGORY_ID}
+    data-mapping="pathname"
+    data-theme="light"
+    data-lang="zh-CN"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+<script>
+  // 主题同步：Giscus 跟随站点暗色模式
+  const observer = new MutationObserver(() => {
+    const theme = document.documentElement.getAttribute('data-theme');
+    const iframe = document.querySelector('iframe.giscus-frame');
+    iframe?.contentWindow?.postMessage(
+      { giscus: { setConfig: { theme: theme === 'dark' ? 'dark_dimmed' : 'light' } } },
+      'https://giscus.app'
+    );
+  });
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme'],
+  });
+</script>
+
+<style>
+  .comments {
+    margin-top: var(--space-12);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border-light);
+  }
+</style>

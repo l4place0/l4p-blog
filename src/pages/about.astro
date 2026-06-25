@@ -1,0 +1,33 @@
+---
+/** 关于页面 */
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="关于" description="关于 l4p">
+  <div class="about-page">
+    <h1 class="about-title">关于</h1>
+    <div class="prose">
+      <p>
+        写一些东西，留住一些东西。
+      </p>
+      <p>
+        这个博客使用 <a href="https://astro.build">Astro</a> 构建，
+        追求极简与美感的平衡。
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .about-page {
+    max-width: var(--content-width);
+    margin: 0 auto;
+  }
+
+  .about-title {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    margin-bottom: var(--space-8);
+  }
+</style>

@@ -1,0 +1,42 @@
+---
+/** 作品集页面 — 展示所有项目 */
+
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+
+const projects = await getCollection('projects');
+const sorted = projects.sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<BaseLayout title="作品" description="项目作品集">
+  <h1 class="projects-title">作品</h1>
+  <div class="projects-grid">
+    {sorted.map((project) => (
+      <ProjectCard
+        title={project.data.title}
+        description={project.data.description}
+        tech={project.data.tech}
+        url={project.data.url}
+        repo={project.data.repo}
+        status={project.data.status}
+      />
+    ))}
+  </div>
+</BaseLayout>
+
+<style>
+  .projects-title {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    margin-bottom: var(--space-8);
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--space-6);
+  }
+</style>
