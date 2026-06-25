@@ -1,0 +1,127 @@
+/* === CSS 变量系统 — 所有设计 token 集中定义 === */
+
+:root {
+  /* Color Palette: Vintage Warm */
+  --color-bg:             #f5f0e8;
+  --color-bg-secondary:   #ebe5d9;
+  --color-bg-tertiary:    #e0d8c8;
+  --color-text:           #3d3229;
+  --color-text-secondary: #6b5d50;
+  --color-text-tertiary:  #8a7b6b;
+  --color-accent:         #8b4513;
+  --color-accent-hover:   #a0522d;
+  --color-accent-muted:   #c4a882;
+  --color-border:         #d4c9b8;
+  --color-border-light:   #e5ddd0;
+  --color-highlight:      #f0e6d3;
+
+  /* Typography */
+  --font-serif:   'Lora', 'Noto Serif SC', 'Georgia', serif;
+  --font-display: 'Playfair Display', 'Noto Serif SC', serif;
+  --font-mono:    'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  --font-sans:    'Inter', 'Noto Sans SC', system-ui, sans-serif;
+
+  /* Typographic Scale (Major Third 1.250) */
+  --text-xs:   0.75rem;
+  --text-sm:   0.875rem;
+  --text-base: 1.0625rem;
+  --text-lg:   1.25rem;
+  --text-xl:   1.5rem;
+  --text-2xl:  1.875rem;
+  --text-3xl:  2.25rem;
+  --text-4xl:  3rem;
+
+  /* Line Heights */
+  --leading-tight:  1.25;
+  --leading-snug:   1.375;
+  --leading-normal: 1.75;
+  --leading-loose:  2;
+
+  /* Letter Spacing */
+  --tracking-tight:  -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide:   0.05em;
+  --tracking-wider:  0.1em;
+
+  /* Spacing Scale */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+
+  /* Layout */
+  --content-width: 42rem;
+  --sidebar-width: 14rem;
+  --max-width:     72rem;
+
+  /* Effects */
+  --shadow-sm:  0 1px 2px rgba(61, 50, 41, 0.05);
+  --shadow-md:  0 4px 12px rgba(61, 50, 41, 0.08);
+  --radius-sm:  2px;
+  --radius-md:  4px;
+}
+
+[data-theme="dark"] {
+  --color-bg:             #1a1612;
+  --color-bg-secondary:   #241f1a;
+  --color-bg-tertiary:    #2e2822;
+  --color-text:           #d4c9b8;
+  --color-text-secondary: #a89b8a;
+  --color-text-tertiary:  #7a6e60;
+  --color-accent:         #c4a882;
+  --color-accent-hover:   #d4b892;
+  --color-accent-muted:   #5a4e40;
+  --color-border:         #3d3428;
+  --color-border-light:   #2e2822;
+  --color-highlight:      #2e2822;
+  --shadow-sm:            0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md:            0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* === Reset === */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-serif);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  min-height: 100vh;
+}
+
+::selection {
+  background: var(--color-highlight);
+  color: var(--color-text);
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--color-accent-hover);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}

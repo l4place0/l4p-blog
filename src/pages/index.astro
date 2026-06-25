@@ -1,16 +1,32 @@
 ---
-// 首页 — 占位页面，Phase 1 会正式设计
+/** 首页 — 站点介绍 + 占位内容 */
+
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<!doctype html>
-<html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>l4.place</title>
-  </head>
-  <body>
-    <h1>l4.place</h1>
-    <p>博客建设中...</p>
-  </body>
-</html>
+<BaseLayout title="l4.place" description="复古文艺风格的个人博客">
+  <section class="hero">
+    <h1 class="hero-title">l4.place</h1>
+    <p class="hero-tagline">写一些东西，留住一些东西。</p>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    text-align: center;
+    padding: var(--space-24) 0;
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: var(--text-4xl);
+    letter-spacing: var(--tracking-wider);
+    margin-bottom: var(--space-4);
+  }
+
+  .hero-tagline {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    font-style: italic;
+  }
+</style>

@@ -1,0 +1,48 @@
+---
+/** Footer — 站点底部：版权 + RSS + 社交链接 */
+---
+
+<footer class="site-footer" data-component="Footer">
+  <div class="footer-content">
+    <p class="copyright">&copy; {new Date().getFullYear()} l4p</p>
+    <nav class="footer-links">
+      <a href="/rss.xml">RSS</a>
+      <a href="/about">关于</a>
+    </nav>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--color-border-light);
+    padding: var(--space-6);
+    margin-top: var(--space-24);
+  }
+
+  .footer-content {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .copyright {
+    font-size: var(--text-sm);
+    color: var(--color-text-tertiary);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: var(--space-6);
+  }
+
+  .footer-links a {
+    font-size: var(--text-sm);
+    color: var(--color-text-tertiary);
+  }
+
+  .footer-links a:hover {
+    color: var(--color-accent);
+  }
+</style>

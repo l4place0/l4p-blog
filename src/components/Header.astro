@@ -1,0 +1,101 @@
+---
+/** Header — 站点导航：Logo + 导航链接 + 搜索按钮 + 暗色切换 */
+
+import DarkModeToggle from './DarkModeToggle.astro';
+
+const navLinks = [
+  { href: '/', label: '首页' },
+  { href: '/blog', label: '文章' },
+  { href: '/projects', label: '作品' },
+  { href: '/about', label: '关于' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="site-header" data-component="Header">
+  <nav class="header-nav">
+    <a href="/" class="site-logo">l4.place</a>
+    <ul class="nav-links">
+      {navLinks.map(({ href, label }) => (
+        <li>
+          <a
+            href={href}
+            class:list={['nav-link', { active: currentPath === href || currentPath.startsWith(href + '/') }]}
+          >
+            {label}
+          </a>
+        </li>
+      ))}
+    </ul>
+    <div class="header-actions">
+      <DarkModeToggle />
+    </div>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    border-bottom: 1px solid var(--color-border-light);
+    padding: var(--space-4) var(--space-6);
+    position: sticky;
+    top: 0;
+    background: var(--color-bg);
+    z-index: 100;
+  }
+
+  .header-nav {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+  }
+
+  .site-logo {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: var(--color-text);
+    text-decoration: none;
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: var(--space-6);
+    flex: 1;
+  }
+
+  .nav-link {
+    font-family: var(--font-serif);
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    padding: var(--space-1) 0;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  @media (max-width: 640px) {
+    .header-nav {
+      gap: var(--space-4);
+    }
+    .nav-links {
+      gap: var(--space-4);
+    }
+  }
+</style>
