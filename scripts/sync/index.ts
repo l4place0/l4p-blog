@@ -22,7 +22,7 @@ const adapters = [zhihuAdapter, juejinAdapter];
 /**
  * 解析命令行参数
  */
-function parseArgs(args: string[]): SyncOptions {
+export function parseArgs(args: string[]): SyncOptions {
   const options: SyncOptions = {};
 
   for (const arg of args) {
