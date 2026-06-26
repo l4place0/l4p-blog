@@ -14,6 +14,7 @@ import { join, basename, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import type { Post, PlatformAdapter, SyncOptions, SyncResult, SyncManifest } from './types.js';
 import { preprocessObsidian } from '../../src/utils/obsidian-preprocess.js';
+import { appendSyndicated, parseSyndicated } from './formatters/frontmatter.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const CONTENT_DIR = join(__dirname, '../../src/content/blog');
@@ -139,9 +140,10 @@ export function runSync(adapters: PlatformAdapter[], options: SyncOptions = {}):
       // 过滤指定平台
       if (options.platform && adapter.name !== options.platform) continue;
 
-      // 检查是否已同步
-      const syndicated = post.frontmatter.syndicated;
-      if (syndicated && syndicated[adapter.name] && !options.force) {
+      // 检查是否已同步（从原始文件内容解析）
+      const rawContent = readFileSync(post.filePath, 'utf-8');
+      const syndicatedStatus = parseSyndicated(rawContent);
+      if (syndicatedStatus[adapter.name] && !options.force) {
         results.push({
           platform: adapter.name,
           slug: post.slug,
@@ -158,7 +160,7 @@ export function runSync(adapters: PlatformAdapter[], options: SyncOptions = {}):
           mkdirSync(dirname(outPath), { recursive: true });
           writeFileSync(outPath, output, 'utf-8');
           // 追加同步状态到源文件 frontmatter
-          appendSyndicatedStatus(post.filePath, adapter.name);
+          appendSyndicated(post.filePath, adapter.name);
         }
 
         results.push({
@@ -182,44 +184,24 @@ export function runSync(adapters: PlatformAdapter[], options: SyncOptions = {}):
 }
 
 /**
- * 追加 syndicated 状态到 frontmatter
- */
-function appendSyndicatedStatus(filePath: string, platform: string) {
-  const raw = readFileSync(filePath, 'utf-8');
-  const date = new Date().toISOString().split('T')[0];
-
-  if (raw.includes('syndicated:')) {
-    // 已有 syndicated 字段，在其中追加平台
-    const updated = raw.replace(
-      /syndicated:\s*\n/,
-      `syndicated:\n    ${platform}: ${date}\n`
-    );
-    writeFileSync(filePath, updated, 'utf-8');
-  } else {
-    // 没有 syndicated 字段，在 frontmatter 末尾添加
-    const updated = raw.replace(
-      /^(---\n[\s\S]*?)(---)/,
-      `$1syndicated:\n    ${platform}: ${date}\n$2`
-    );
-    writeFileSync(filePath, updated, 'utf-8');
-  }
-}
-
-/**
  * 生成同步清单
  */
 export function generateManifest(adapters: PlatformAdapter[]): SyncManifest {
   const posts = getPosts();
 
   return {
-    posts: posts.map(post => ({
-      slug: post.slug,
-      title: post.title,
-      platforms: adapters.map(a => ({
-        name: a.name,
-        syndicated: !!(post.frontmatter.syndicated && post.frontmatter.syndicated[a.name]),
-        date: post.frontmatter.syndicated ? post.frontmatter.syndicated[a.name] : undefined,
-      })),
-    })),
+    posts: posts.map(post => {
+      const rawContent = readFileSync(post.filePath, 'utf-8');
+      const syndicatedStatus = parseSyndicated(rawContent);
+      return {
+        slug: post.slug,
+        title: post.title,
+        platforms: adapters.map(a => ({
+          name: a.name,
+          syndicated: !!syndicatedStatus[a.name],
+          date: syndicatedStatus[a.name] || undefined,
+        })),
+      };
+    }),
   };
 }
