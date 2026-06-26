@@ -4,3 +4,4 @@ dist-sync/
 .astro/
 *.log
 test-results/
+scripts/sync/.sync-state.json

@@ -6,7 +6,7 @@
  * - 解析 frontmatter（简易 YAML 解析）
  * - 对 MDX 内容应用 Obsidian 预处理
  * - 调用 adapter 生成输出
- * - 追加同步状态到 frontmatter
+ * - 通过独立 JSON 文件追踪同步状态
  */
 
 import { readFileSync, writeFileSync, mkdirSync, readdirSync } from 'fs';
@@ -14,7 +14,7 @@ import { join, basename, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import type { Post, PlatformAdapter, SyncOptions, SyncResult, SyncManifest } from './types.js';
 import { preprocessObsidian } from '../../src/utils/obsidian-preprocess.js';
-import { appendSyndicated, parseSyndicated } from './formatters/frontmatter.js';
+import { isSynced, markSynced, getSyncStatus } from './formatters/frontmatter.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const CONTENT_DIR = join(__dirname, '../../src/content/blog');
@@ -140,10 +140,8 @@ export function runSync(adapters: PlatformAdapter[], options: SyncOptions = {}):
       // 过滤指定平台
       if (options.platform && adapter.name !== options.platform) continue;
 
-      // 检查是否已同步（从原始文件内容解析）
-      const rawContent = readFileSync(post.filePath, 'utf-8');
-      const syndicatedStatus = parseSyndicated(rawContent);
-      if (syndicatedStatus[adapter.name] && !options.force) {
+      // 检查是否已同步
+      if (isSynced(post.slug, adapter.name) && !options.force) {
         results.push({
           platform: adapter.name,
           slug: post.slug,
@@ -159,8 +157,8 @@ export function runSync(adapters: PlatformAdapter[], options: SyncOptions = {}):
         if (!options.dryRun) {
           mkdirSync(dirname(outPath), { recursive: true });
           writeFileSync(outPath, output, 'utf-8');
-          // 追加同步状态到源文件 frontmatter
-          appendSyndicated(post.filePath, adapter.name);
+          // 记录同步状态到独立 JSON 文件
+          markSynced(post.slug, adapter.name);
         }
 
         results.push({
@@ -191,15 +189,14 @@ export function generateManifest(adapters: PlatformAdapter[]): SyncManifest {
 
   return {
     posts: posts.map(post => {
-      const rawContent = readFileSync(post.filePath, 'utf-8');
-      const syndicatedStatus = parseSyndicated(rawContent);
+      const status = getSyncStatus(post.slug);
       return {
         slug: post.slug,
         title: post.title,
         platforms: adapters.map(a => ({
           name: a.name,
-          syndicated: !!syndicatedStatus[a.name],
-          date: syndicatedStatus[a.name] || undefined,
+          syndicated: !!status[a.name],
+          date: status[a.name] || undefined,
         })),
       };
     }),
