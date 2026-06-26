@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { readFileSync, readdirSync } from 'fs';
+import { readFileSync, readdirSync, existsSync } from 'fs';
 import { resolve, join } from 'path';
 import { blogSchema, projectsSchema } from '../content/schemas';
 
@@ -67,6 +67,59 @@ describe('内容完整性', () => {
         status: fm.status,
       });
       expect(result.success, `${file} frontmatter 不合法: ${JSON.stringify(result.error?.issues)}`).toBe(true);
+    }
+  });
+
+  it('所有文章必填 frontmatter 字段完整', () => {
+    const files = readdirSync(blogDir).filter(f => f.endsWith('.mdx'));
+    for (const file of files) {
+      const content = readFileSync(join(blogDir, file), 'utf-8');
+      const fm = parseFrontmatter(content);
+      expect(fm.title, `${file}: 缺少 title`).toBeTruthy();
+      expect(fm.description, `${file}: 缺少 description`).toBeTruthy();
+      expect(fm.pubDate, `${file}: 缺少 pubDate`).toBeTruthy();
+      expect(fm.category, `${file}: 缺少 category`).toBeTruthy();
+    }
+  });
+
+  it('pubDate 不是未来日期（可能是笔误）', () => {
+    const files = readdirSync(blogDir).filter(f => f.endsWith('.mdx'));
+    const now = new Date();
+    for (const file of files) {
+      const content = readFileSync(join(blogDir, file), 'utf-8');
+      const fm = parseFrontmatter(content);
+      if (fm.pubDate) {
+        const date = new Date(fm.pubDate);
+        // 允许 1 天的误差（时区问题）
+        const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+        expect(
+          date.getTime(),
+          `${file}: pubDate ${fm.pubDate} 是未来日期`
+        ).toBeLessThanOrEqual(tomorrow.getTime());
+      }
+    }
+  });
+
+  it('附件目录中没有被完全孤立的文件', () => {
+    const attachmentsDir = resolve(process.cwd(), 'src/content/attachments');
+    if (!existsSync(attachmentsDir)) return;
+
+    const attachments = readdirSync(attachmentsDir).filter(
+      f => !f.startsWith('.') && f !== 'README.md'
+    );
+    if (attachments.length === 0) return; // 没有附件，跳过
+
+    // 读取所有文章内容
+    const files = readdirSync(blogDir).filter(f => f.endsWith('.mdx'));
+    const allContent = files
+      .map(f => readFileSync(join(blogDir, f), 'utf-8'))
+      .join('\n');
+
+    for (const attachment of attachments) {
+      // 检查附件是否在某篇文章中被引用
+      const isReferenced = allContent.includes(attachment) ||
+                           allContent.includes(encodeURI(attachment));
+      expect(isReferenced, `孤立附件: ${attachment} 未被任何文章引用`).toBe(true);
     }
   });
 });
