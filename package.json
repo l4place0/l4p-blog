@@ -16,7 +16,9 @@
     "e2e:ui": "playwright test --ui",
     "e2e:headed": "playwright test --headed",
     "smoke": "npx playwright test e2e/smoke.spec.ts",
-    "deploy": "bash scripts/deploy.sh"
+    "deploy": "bash scripts/deploy.sh",
+    "sync": "tsx scripts/sync/index.ts",
+    "sync:dry": "tsx scripts/sync/index.ts --dry-run"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.0.0",
@@ -28,6 +30,7 @@
     "@axe-core/playwright": "^4.12.1",
     "@playwright/test": "^1.61.1",
     "pagefind": "^1.0.0",
+    "tsx": "^4.0.0",
     "vitest": "^3.0.0"
   }
 }
