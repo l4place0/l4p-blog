@@ -10,7 +10,8 @@ import CategoryList from '../../components/CategoryList.astro';
 import config from '../../../blog.config';
 const POSTS_PER_PAGE = config.postsPerPage;
 
-const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const isDev = import.meta.env.DEV;
+const allPosts = await getCollection('blog', ({ data }) => isDev || !data.draft);
 const sortedPosts = allPosts.sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );

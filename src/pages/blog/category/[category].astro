@@ -18,9 +18,10 @@ export function getStaticPaths() {
 
 const { category } = Astro.props;
 
+const isDev = import.meta.env.DEV;
 const allPosts = await getCollection(
   'blog',
-  ({ data }) => !data.draft && data.category === category
+  ({ data }) => (isDev || !data.draft) && data.category === category
 );
 const sortedPosts = allPosts.sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()

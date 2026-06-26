@@ -6,7 +6,8 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import ArticleCard from '../../../components/ArticleCard.astro';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  const isDev = import.meta.env.DEV;
+  const posts = await getCollection('blog', ({ data }) => isDev || !data.draft);
   const allTags = [...new Set(posts.flatMap((p) => p.data.tags))];
 
   return allTags.map((tag) => ({
@@ -17,9 +18,10 @@ export async function getStaticPaths() {
 
 const { tag } = Astro.props;
 
+const isDev = import.meta.env.DEV;
 const allPosts = await getCollection(
   'blog',
-  ({ data }) => !data.draft && data.tags.includes(tag)
+  ({ data }) => (isDev || !data.draft) && data.tags.includes(tag)
 );
 const sortedPosts = allPosts.sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
