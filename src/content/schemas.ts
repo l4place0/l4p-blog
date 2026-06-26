@@ -1,6 +1,7 @@
 /** 纯 Zod schema 定义 — 可被测试直接导入 */
 
 import { z } from 'zod';
+import config from '../../blog.config';
 
 export const blogSchema = z.object({
   title: z.string(),
@@ -14,8 +15,8 @@ export const blogSchema = z.object({
   cover: z.string().optional(),
   coverAlt: z.string().optional(),
   ogImage: z.string().optional(),
-  author: z.string().default('l4p'),
-  lang: z.enum(['zh', 'en']).default('zh'),
+  author: z.string().default(config.author),
+  lang: z.enum(['zh', 'en']).default(config.lang),
 });
 
 export const projectsSchema = z.object({
