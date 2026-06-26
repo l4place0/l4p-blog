@@ -2,6 +2,7 @@
 /** 搜索页面 — Pagefind 全文搜索 */
 
 import BaseLayout from '../layouts/BaseLayout.astro';
+const baseUrl = import.meta.env.BASE_URL;
 ---
 
 <BaseLayout title="搜索" description="搜索博客文章">
@@ -12,12 +13,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   </div>
 </BaseLayout>
 
-<script is:inline>
+<script is:inline define:vars={{ baseUrl }}>
   (async function() {
     const container = document.getElementById('pagefind-search');
     const note = document.getElementById('search-note');
     try {
-      const pagefind = await import('/_pagefind/pagefind.js');
+      const pagefind = await import(`${baseUrl}pagefind/pagefind.js`);
       pagefind.init();
     } catch {
       if (note) note.textContent = '搜索功能需要构建后（npm run build）才可用。';

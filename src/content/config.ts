@@ -5,5 +5,6 @@ import { blogSchema, projectsSchema } from './schemas';
 
 const blog = defineCollection({ type: 'content', schema: blogSchema });
 const projects = defineCollection({ type: 'content', schema: projectsSchema });
+const attachments = defineCollection({ type: 'content' });
 
-export const collections = { blog, projects };
+export const collections = { blog, projects, attachments };

@@ -1,5 +1,6 @@
 ---
 /** SearchDialog — Pagefind 全文搜索弹窗 */
+const baseUrl = import.meta.env.BASE_URL;
 ---
 
 <button
@@ -27,13 +28,13 @@
   </div>
 </dialog>
 
-<script is:inline>
+<script is:inline define:vars={{ baseUrl }}>
   let pagefind = null;
 
   async function initPagefind() {
     if (pagefind) return pagefind;
     try {
-      pagefind = await import(`${import.meta.env.BASE_URL}pagefind/pagefind.js`);
+      pagefind = await import(`${baseUrl}pagefind/pagefind.js`);
       return pagefind;
     } catch {
       return null;
