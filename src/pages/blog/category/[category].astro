@@ -6,10 +6,11 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import ArticleCard from '../../../components/ArticleCard.astro';
 import CategoryList from '../../../components/CategoryList.astro';
 
-const CATEGORIES = ['随笔', '技术', '读书', '生活', '设计'];
+const CATEGORIES = ['随笔', '技术', '读书', '生活', '设计'] as const;
 
 export function getStaticPaths() {
-  return CATEGORIES.map((category) => ({
+  const categories = ['随笔', '技术', '读书', '生活', '设计'];
+  return categories.map((category) => ({
     params: { category },
     props: { category },
   }));
