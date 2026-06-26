@@ -4,6 +4,7 @@ import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
 
 export async function GET(context: { site: URL }) {
+  // RSS 始终排除草稿（与其他页面不同，RSS 是面向订阅者的）
   const posts = await getCollection('blog', ({ data }) => !data.draft);
   return rss({
     title: 'l4.place',

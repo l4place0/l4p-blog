@@ -9,8 +9,7 @@ import CategoryList from '../../../components/CategoryList.astro';
 const CATEGORIES = ['随笔', '技术', '读书', '生活', '设计'];
 
 export function getStaticPaths() {
-  const categories = ['随笔', '技术', '读书', '生活', '设计'];
-  return categories.map((category) => ({
+  return CATEGORIES.map((category) => ({
     params: { category },
     props: { category },
   }));
